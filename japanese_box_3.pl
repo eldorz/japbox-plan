@@ -10,6 +10,8 @@
 % Programming for Artifical Intelligence 4th ed, I Bratko, Chapter 7
 % Constraint Logic Programming.
 
+% Using SWI-Prolog version 6.6.1
+
 % How to use...
 % 1. Set the size and thickness of your wooden sheet under sheet size
 % below.
@@ -21,13 +23,13 @@
 % function to the upper bound of your successful guesses - this will
 % significantly reduce runtime.
 %
-% 3. Call best_fit(X). Wait a while.
-% Ctrl-C & a when bored of waiting, this function may not end in any
-% reasonable time. X will be your box's length, and the program will
-% output the sizes and orientations of all the parts. You will still
-% have to guess some of the positions of the parts as they will be
-% variables. If you really want to see the constraints you can rerun
-% fit(ply, X, L), but I've found the constraints to be pretty unhelpful
+% 3. Call best_fit(X). Wait a while. Ctrl-C & 'a' when bored of waiting, 
+% this function may not end in any reasonable time. X will be your box's
+% length, and the program will output the sizes and orientations of all
+% the parts. You will still have to guess some of the positions of the
+% parts as some will be variables. If you really want to see the 
+% constraints you can rerun fit(ply, X, L), where X is the value you got
+% from best_fit/1, but I've found the constraints to be pretty unhelpful
 % on the whole.
 
 use_module(library(clpr)).
