@@ -16,8 +16,7 @@ Using SWI-Prolog version 6.6.1
 
 How to use...
 
-1. Set the size and thickness of your wooden sheet under sheet size
-below.
+1. Set the size and thickness of your wooden sheet under sheet size.
 
 2. Search can take a long time, so it is a good idea to find an
 approximate value. Do this by calling, fit(ply, your_guess, L), where
