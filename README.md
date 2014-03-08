@@ -15,6 +15,7 @@ Constraint Logic Programming.
 Using SWI-Prolog version 6.6.1
 
 How to use...
+
 1. Set the size and thickness of your wooden sheet under sheet size
 below.
 
