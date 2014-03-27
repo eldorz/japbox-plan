@@ -30,7 +30,8 @@
 % fit(ply, X, L), but I've found the constraints to be pretty unhelpful
 % on the whole.
 
-use_module(library(clpr)).
+% need to call use_module(library(clpr)). to load constraint logic
+% programming library.
 
 % proportions
 y_ratio(X,Y) :-
@@ -40,10 +41,14 @@ z_ratio(X,Z) :-
 
 % sheet size
 sheet(ply,dim(X,Y)) :-
-	X is 1620,
-	Y is 740.
+	X is 1200,
+	Y is 596.
 thickness(T) :-
-	T is 16.
+	T is 18.
+
+% width of a saw cut
+cut(T) :-
+	T is 4.
 
 % representation of rectangles
 %  rect(pos(X,Y), dim(A,B)) represents a rectangle of size A by B at
@@ -105,8 +110,14 @@ piece(grip, BoxLen, dim(A,B)) :-
 	 A = Y - 2 * T,
 	 B = 0.188 * Z}.
 
+piece_plus_cut(PieceName, BoxLen, dim(A1, B1)) :-
+	cut(T),
+	piece(PieceName, BoxLen, dim(A,B)),
+	{A1 = A + T,
+	B1 = B + T}.
+
 piece_rectangle(PieceName, BoxLen, rect(Pos, Dim)) :-
-	piece(PieceName, BoxLen, Dim0),			 % dimensions of piece
+	piece_plus_cut(PieceName, BoxLen, Dim0), % dimensions of piece
 	rotate(rect(Pos, Dim0), rect(Pos, Dim)). % Rectangle may be rotated
 
 fit(SheetName, BoxLen, [bottom/PieceA, lid/PieceB, side1/PieceC, side2/PieceD,
@@ -115,7 +126,7 @@ fit(SheetName, BoxLen, [bottom/PieceA, lid/PieceB, side1/PieceC, side2/PieceD,
 			grip2/PieceL, lid_brace/PieceM]) :-
 	% modify BoxLen to provide a lower bound on your box's length. Too high
 	% and fitting will fail, too low and it will take a very long time.
-	{BoxLen >= 100},
+	{BoxLen >= 590},
 	sheet(SheetName, Dim), Sheet = rect(pos(0.0,0.0), Dim),
 	piece_rectangle(bottom, BoxLen, PieceA), inside(PieceA, Sheet),
 	piece_rectangle(lid, BoxLen, PieceB), inside(PieceB, Sheet),
@@ -220,8 +231,25 @@ best_fit(MaxLen) :-
 
 writelist([]).
 writelist([X|L]):-
-	  write(X), nl,
-	  writelist(L).
+	X = PieceName/rect(pos(A,B), dim(C,D)),
+	write(PieceName),
+	write(': pos('),
+	write_if_num(A),
+	write(','),
+	write_if_num(B),
+	write(') dim('),
+	cut(Cut),
+	format('~0f',C - Cut),
+	write(','),
+	format('~0f',D - Cut),
+	write(')'),
+	nl,
+	writelist(L).
+
+write_if_num(X) :-
+	number(X), !, format('~0f',X)
+	;
+	write('*').
 
 
 
